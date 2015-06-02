@@ -1,0 +1,110 @@
+%define	sys_read 0
+%define	sys_write 1
+%define	sys_open 2
+%define	sys_close 3
+%define	sys_exit 60
+
+%define	std_input 0
+%define	std_output 1
+
+%define o_readonly 0
+%define o_writeonly 1
+%define o_readwrite 2
+%define o_create 100o
+%define defaultMode 644o ;The default permissions for new files are rw-r--r-- = 644o
+
+%define argcount byte [rsp]
+%define argument(i) [rsp + 8*i]
+
+%macro	return 1
+	mov rax, sys_exit
+	mov rdi, %1
+	syscall
+%endmacro
+
+%macro	getchar 1
+	fgetchar std_input, %1
+%endmacro
+
+%macro	fgetchar 2
+	mov rax,sys_read
+	mov rdi,%1
+	mov rsi,%2
+	mov rdx,1
+	syscall
+%endmacro
+
+%macro	getstr 1
+	fgetstr std_input, %1
+%endmacro
+
+%macro	fgetstr	2
+	fgetuntil %1, %2, 0
+%endmacro
+
+%macro	fgetline 2
+	fgetuntil %1, %2, 10
+%endmacro
+
+%macro	fgetcsv 2
+	fgetuntil %1, %2, ','
+%endmacro
+
+%macro	fgetuntil 3
+	mov rsi,%2
+%%loop:
+	fgetchar %1, rsi
+	cmp byte [rsi], %3
+	je %%end
+	cmp byte [rsi], ' '
+	je %%loop ;Skip spaces
+	inc rsi
+	jmp %%loop
+%%end
+%endmacro
+
+%macro	putchar	1
+	fputchar std_output, %1
+%endmacro
+
+%macro	fputchar 2
+	mov rax,sys_write
+	mov rdi,%1
+	mov rsi,%2
+	mov rdx,1
+	syscall
+%endmacro
+
+%macro	putstring 1
+	fputstring std_output, %1
+%endmacro
+
+%macro	fputstring 2
+;Writes string until null char is found
+	fputuntil %1, %2, 0
+%endmacro
+
+%macro	fputuntil 3
+	mov rsi,%2
+%%loop:
+	cmp byte [rsi], %3
+	je %%end
+	fputchar %1, rsi
+	inc rsi
+	jmp %%loop
+%%end
+%endmacro
+
+%macro	fopen 2-3 defaultMode
+	mov rax,sys_open
+	mov rdi, %1
+	mov rsi, %2
+	mov rdx, %3
+	syscall
+%endmacro
+
+%macro	fclose 1
+	mov rdi, %1
+	mov rax,sys_close
+	syscall
+%endmacro

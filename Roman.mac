@@ -1,0 +1,26 @@
+%include "String.mac"
+
+%macro romanToInt 3
+	xor rax, rax
+	mov rdi, Roman1
+%%loop:
+	push rdi
+	strCompare %1, rdi, %2
+	pop rdi
+	je %%end
+	add rdi, %2
+	inc rax
+	cmp rax, %3
+	jne %%loop
+%%end
+%endmacro
+
+section .data
+Roman1		db "I",0,0,0,0
+Roman2		db "II",0,0,0
+Roman3		db "III",0,0
+Roman4		db "IV",0,0,0
+Roman5		db "V",0,0,0,0
+Roman6		db "VI",0,0,0
+Roman7		db "VII",0,0
+Roman8		db "VIII",0
