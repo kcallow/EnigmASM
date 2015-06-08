@@ -26,8 +26,8 @@
 ## Who's who in the source:
   - Main.asm: name says it all.  Contains macros for loading the configuration and rotors from files, and to print current state of program.
   - Enigma.mac: declares the Rotor data structure, and its getters, printer and constructor.  Contains the core elements of the code: all encryption is handled here. 
-  - String.mac: contains macros for string comparison, length and clearing.
-  - System.mac: declares useful macro wrappers around the read, write, open, and close system calls.
+  - String.mac: contains macros for string comparison and clearing.
+  - System.mac: declares useful macro wrappers around the read, write, open, and close system calls, using C-style (zero terminated) strings.
   - Itoa.mac: implements integer<->string conversions.
   - Roman.mac: implements roman->integer conversion, for n < 9.
   - IO.asm: activates/deactivates raw mode.  This allows to read characters as soon as they are inputted, as opposed to waiting until Return is pressed.  
@@ -70,10 +70,4 @@
     K -> I -> N -> O -> S -> H -> A -> I -> T -> M
     MY NAME IS KENNETH CALLOW.  THIS IS ENIGMASM
 
-  - Main.asm: name says it all.  Contains macros for loading the configuration and rotors from files, and to print current state of program.
-  - Enigma.mac: declares the Rotor data structure, and its getters, printer and constructor.  Contains the core elements of the code: all encryption is handled here. 
-  - String.mac: contains macros for string comparison, length and clearing.
-  - System.mac: declares useful macro wrappers around the read, write, open, and close system calls.
-  - Itoa.mac: implements integer<->string conversions.
-  - Roman.mac: implements roman->integer conversion, for n < 9.
-  - IO.asm: activates/deactivates raw mode.  This allows to read characters as soon as they are inputted, as opposed to waiting until Return is pressed.  
+  The Rotor data structure is simply a 26 char lookup table to store each letter's shift, and a byte to store the rotation.  The main loop gets a char from the standard input.  If no chars were read, it exits.  The char is processed: it is encrypted and later the rotors rotate according to the algorithm.  To encrypt the char we must pass it through the encryption elements as specified in the algorithm.  To enter "from the right", "getLetterShift" is used, and "from the left", "getLetterFromShift".  The letter is printed to screen each time it is outputted by an element.  "getLetterShift" simply gets the shift from the lookup table, adding the rotation and taking modulo 26 to the index.  "getLetterFromShift" searches for the char in the lookup table to get its index, and subtracts the rotation, taking modulo 26 of the index.

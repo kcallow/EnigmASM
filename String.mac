@@ -7,19 +7,6 @@
 	rep	cmpsb
 %endmacro
 
-%macro strLen 2
-;Reads string in rdi. Preserves its value
-;Takes maximum length in rcx and decrements for each unused char
-	mov	rdi, %1
-	mov	rcx, %2
-%%loop:	;Decrement for each null char at end of string
-	cmp	byte [rdi + rcx - 1],0
-	jne	%%end		;If non null char found, stop decrementing
-	dec	rcx
-	jnz	%%loop
-%%end:
-%endmacro
-
 %macro clearString 2
 ;Clears rcx bytes from string in rdi
 	mov	rdi, %1
