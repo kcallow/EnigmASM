@@ -30,4 +30,5 @@
   - System.mac: declares useful macro wrappers around the read, write, open, and close system calls.
   - Itoa.mac: implements integer<->string conversions.
   - Roman.mac: implements roman->integer conversion, for n < 9.
-  - IO.asm: activates/deactivates raw mode.  This allows to read characters as soon as they are inputted, as opposed to waiting until Return is pressed.  NOTE: this is legacy 32 bit code, and needs to be updated to 64 bits.
+  - IO.asm: activates/deactivates raw mode.  This allows to read characters as soon as they are inputted, as opposed to waiting until Return is pressed.  
+  	- NOTE: this is legacy 32 bit code, and needs to be updated to 64 bits.
