@@ -49,7 +49,7 @@
      - the plugboard's output is displayed.
 
 ## The implementation:
- - All encryption elements are represented by the Rotor data structure, with the reflector and plugboard with a fixed rotation of 0.  The program attempts to explain its workings clearly.
+  All encryption elements are represented by the Rotor data structure, with the reflector and plugboard with a fixed rotation of 0.  The program attempts to explain its workings clearly.
 
     Use reflector:    ZYXWVUTSRQPONMLKJIHGFEDCBA
     Left rotor:    HXLNFTGKDCMWBESOVPZJAYQUIR
