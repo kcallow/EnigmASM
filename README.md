@@ -34,8 +34,8 @@
   	- NOTE: IO.asm is legacy 32 bit code, and needs to be updated to 64 bits.
 
 ## The algorithm:
-An Enigma machine possesses five encryption elements: the reflector, the left, middle and right rotors, and the plugboard.  These five calculate permutations (and their inverses) over the English alphabet: they take a letter and output another, all inputs have distinct outputs (injectivity), all possible outputs have an input which will produce them (surjectivity).  When the permutation is being calculated, I will say the input "enters from the right", and when the inverse is calculated, "enters from the left".  The reflector is a special case that possesses a symmetric relation: if x is the output of y, then y is the output of x.  The permutation given by a rotor varies according to its rotation: the rotation offsets the input (modulo 26).  The plugboard remains fixed on a single permutation.
-The elements work together as follows:
+ - An Enigma machine possesses five encryption elements: the reflector, the left, middle and right rotors, and the plugboard.  These five calculate permutations (and their inverses) over the English alphabet: they take a letter and output another, all inputs have distinct outputs (injectivity), all possible outputs have an input which will produce them (surjectivity).  When the permutation is being calculated, I will say the input "enters from the right", and when the inverse is calculated, "enters from the left".  The reflector is a special case that possesses a symmetric relation: if x is the output of y, then y is the output of x.  The permutation given by a rotor varies according to its rotation: the rotation offsets the input (modulo 26).  The plugboard remains fixed on a single permutation.
+ - The elements work together as follows:
      - the user input enters the plugboard,
      - the plugboard's output enters the right rotor from the right, the rotor rotates,
      - the right rotor's output enters the middle rotor from the right, the middle rotor rotates if the right one has rotated a multiple of 26 times,
@@ -48,4 +48,4 @@ The elements work together as follows:
      - the plugboard's output is displayed.
 
 ## The implementation:
-All encryption elements are represented by the Rotor data structure, with the reflector and plugboard with a fixed rotation of 0.  The program itself is self-explanatory.
+ - All encryption elements are represented by the Rotor data structure, with the reflector and plugboard with a fixed rotation of 0.  The program itself is self-explanatory.
