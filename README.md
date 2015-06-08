@@ -50,6 +50,7 @@
 
 ## The implementation:
   All encryption elements are represented by the Rotor data structure, with the reflector and plugboard with a fixed rotation of 0.  The program attempts to explain its workings clearly.  It displays the reflector, rotors and plugboard.  The rotors rotate as you type.  A sequence of letters and arrows shows how the character is encrypted step by step through each element.
+  Encrypting:
 
     Use reflector:    ZYXWVUTSRQPONMLKJIHGFEDCBA
     Left rotor:       HXLNFTGKDCMWBESOVPZJAYQUIR
@@ -59,3 +60,12 @@
     M -> T -> I -> A -> H -> S -> O -> N -> I -> K
     AV VLXQ QM YWJOLEP SIUMJE.  PMFR SK GVYSVLDK
 
+  Decrypting (by copy-pasting encrypted result into reset program):
+
+    Use reflector:    ZYXWVUTSRQPONMLKJIHGFEDCBA
+    Left rotor:       HXLNFTGKDCMWBESOVPZJAYQUIR
+    Middle rotor:     UPSDNHLXAWMJQOFECKVZBRGITY
+    Right rotor:      MFLGDQVZNTOWYHXUSPAIBRCJEK
+    Use plugboard:    JVNDEXRHKAILTCUZSGQMOBWFYP
+    K -> I -> N -> O -> S -> H -> A -> I -> T -> M
+    MY NAME IS KENNETH CALLOW.  THIS IS ENIGMASM
