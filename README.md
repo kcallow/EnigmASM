@@ -34,7 +34,8 @@
   	- NOTE: IO.asm is legacy 32 bit code, and needs to be updated to 64 bits.
 
 ## The algorithm:
- - An Enigma machine possesses five encryption elements: the reflector, the left, middle and right rotors, and the plugboard.  These five calculate permutations (and their inverses) over the English alphabet: they take a letter and output another, all inputs have distinct outputs (injectivity), all possible outputs have an input which will produce them (surjectivity).  When the permutation is being calculated, I will say the input "enters from the right", and when the inverse is calculated, "enters from the left".  The reflector is a special case that possesses a symmetric relation: if x is the output of y, then y is the output of x.  The permutation given by a rotor varies according to its rotation: the rotation offsets the input (modulo 26).  The plugboard remains fixed on a single permutation.
+ - An Enigma machine possesses five encryption elements: the reflector, the left, middle and right rotors, and the plugboard.  These five calculate permutations (and their inverses) over the English alphabet: they take a letter and output another, all inputs have distinct outputs (injectivity), all possible outputs have an input which will produce them (surjectivity).  When the permutation is being calculated, I will say the input "enters from the right", and when the inverse is calculated, "enters from the left".  The reflector is a special case that possesses a symmetric relation: if x is the output of y, then y is the output of x.  The permutation given by a rotor varies according to its rotation: the rotation offsets the input (modulo 26).  The plugboard and reflector remain fixed on a single permutation.
+ ![Parts of the Enigma machine](enigma.png)
  - The elements work together as follows:
      - the user input enters the plugboard,
      - the plugboard's output enters the right rotor from the right, the rotor rotates,
