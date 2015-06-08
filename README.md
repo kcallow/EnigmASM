@@ -69,3 +69,11 @@
     Use plugboard:    JVNDEXRHKAILTCUZSGQMOBWFYP
     K -> I -> N -> O -> S -> H -> A -> I -> T -> M
     MY NAME IS KENNETH CALLOW.  THIS IS ENIGMASM
+
+  - Main.asm: name says it all.  Contains macros for loading the configuration and rotors from files, and to print current state of program.
+  - Enigma.mac: declares the Rotor data structure, and its getters, printer and constructor.  Contains the core elements of the code: all encryption is handled here. 
+  - String.mac: contains macros for string comparison, length and clearing.
+  - System.mac: declares useful macro wrappers around the read, write, open, and close system calls.
+  - Itoa.mac: implements integer<->string conversions.
+  - Roman.mac: implements roman->integer conversion, for n < 9.
+  - IO.asm: activates/deactivates raw mode.  This allows to read characters as soon as they are inputted, as opposed to waiting until Return is pressed.  

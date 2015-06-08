@@ -171,7 +171,7 @@ _start:
 	putstring clearScreen
 	putstring introMsg
 
-	;If arg 4 exists, read line by line.
+	;If 4 or more args, put in line mode
 	cmp argcount, 4
 	jl .skip0
 	call canonical_on
@@ -192,7 +192,7 @@ _start:
 	xor rbx,rbx
 .loop:
 	push rbx
-	getchar  c
+	getchar c
 	cmp rax, 0
 	je .end
 	putstring clearScreen
@@ -218,7 +218,7 @@ _start:
 
 section .data
 introMsg	db "Welcome to EnigmASM. Ctrl-C to quit.",10,0
-usageMsg	db "  Usage: $ ./EngimASM config [extra-rotors] [line-mode]",10,0
+usageMsg	db "  Usage: $ ./EngimASM config [extra-rotors] [line-mode-on] [< input-file] [> output-file]",10,0
 rotorMsg	db 10,"Read rotor:	",0
 readReflectrMsg	db 10,"Read reflector:	",0
 reflectorMsg	db 10,"Use reflector:	",0
