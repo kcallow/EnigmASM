@@ -1,12 +1,12 @@
-ENSAMBLADOR = yasm
+ASSEMBLER = yasm
 LINKER = ld
-FORMATO = elf64
-CODIGO = Main.asm
-OBJETO = Main.o
-EJECUTABLE = Main
+FORMAT = elf64
+CODE = Main.asm
+OBJECT = Main.o
+EXECUTABLE = Main
 
-all: $(CODIGO)
-	$(ENSAMBLADOR) $(CODIGO) -f $(FORMATO) -o $(OBJETO)
-	$(LINKER) $(OBJETO) -o $(EJECUTABLE)
-	@echo "Se ensamblo y vinculo al ejecutable $(EJECUTABLE).\nHaga ./$(EJECUTABLE) para correr."
+all: $(CODE)
+	$(ASSEMBLER) $(CODE) -f $(FORMAT) -o $(OBJECT)
+	$(LINKER) $(OBJECT) -o $(EXECUTABLE)
+	@echo "Assembled and linked to $(EXECUTABLE).\nDo ./$(EXECUTABLE) to run it."
 

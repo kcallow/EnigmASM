@@ -1,6 +1,6 @@
 %include "IO.asm"
-%include "Enigma.mac"
 %include "System.mac"
+%include "Enigma.mac"
 %include "Itoa.mac"
 %include "Roman.mac"
 %define temp_size 5
@@ -182,11 +182,11 @@ _start:
 	jl .skip1
 	readRotorFile
 .skip1:
-	putstring reflectorMsg
-	putstring reflector
 	;If two or more args, then load rotor sequence, rotations and plugboard from second arg
 	cmp argcount, 2
 	jl .error
+	putstring reflectorMsg
+	putstring reflector
 	readConfigFile
 	putstring beginMsg
 	xor rbx,rbx
