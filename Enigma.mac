@@ -17,6 +17,25 @@ istruc Rotor
 iend
 %endmacro
 
+%macro printRotor 1
+	xor rax,rax
+	mov al, rotation(%1)
+	mov rcx, LETTERS
+%%loop
+	cmp al, LETTERS
+	jne %%skip
+	sub al, LETTERS
+%%skip
+	lea rsi, [rax + %1]
+	push rax
+	push rcx
+	putchar rsi
+	pop rcx
+	pop rax
+	inc rax
+	loop %%loop
+%endmacro
+
 %macro letterToCode 1
 	sub %1, 'A'
 %endmacro
@@ -30,7 +49,7 @@ iend
 	jl %%end
 	cmp %1, 'Z'
 	jg %%end
-	cmp %1,%1	;Set ZF
+	cmp rax,rax	;Set ZF
 %%end
 %endmacro
 
@@ -78,14 +97,33 @@ iend
 
 %macro encryptLetter 6
 	getLetterShift %1, %6
+	printLetter
 	getLetterShift %1, %5
+	printLetter
 	getLetterShift %1, %4
+	printLetter
 	getLetterShift %1, %3
+	printLetter
 	getLetterShift %1, %2
+	printLetter
 	getLetterFromShift %1, %3
+	printLetter
 	getLetterFromShift %1, %4
+	printLetter
 	getLetterFromShift %1, %5
+	printLetter
 	getLetterFromShift %1, %6
+	printLetter
+%endmacro
+
+%macro printLetter 0
+	push rax
+	push r11
+	mov [tempChr], al
+	putstring arrow
+	putchar tempChr
+	pop r11
+	pop rax
 %endmacro
 
 %macro handleRotations 3
@@ -105,3 +143,7 @@ iend
 	mov rotation(%1), 0
 %%end
 %endmacro
+
+section .data
+arrow	db " -> ",0
+tempChr	db 0

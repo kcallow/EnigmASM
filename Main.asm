@@ -1,8 +1,11 @@
+%include "IO.asm"
 %include "Enigma.mac"
 %include "System.mac"
 %include "Itoa.mac"
 %include "Roman.mac"
 %define temp_size 5
+%define temp2_size 64
+%define result_size 4096
 %define Rotors 8
 
 %macro loadCsv 2
@@ -24,7 +27,7 @@
 	loadRotor rotor7
 	putstring rotorMsg
 	loadRotor rotor8
-	putstring reflectorMsg
+	putstring readReflectrMsg
 	loadRotor reflector
 %endmacro
 
@@ -77,7 +80,7 @@
 %endmacro
 
 %macro loadPlugboard 1
-	loadUntilNewline temp2, 64
+	loadUntilNewline temp2, temp2_size
 	xor rax,rax
 	xor rbx,rax
 	mov rsi, temp2
@@ -102,24 +105,14 @@
 	mov shift(%1, rbx), al
 %endmacro
 
-section .text
-
-global _start
-_start:
-	putstring introMsg
-	;If three or more args, then load extra rotors from third arg
-	cmp argcount, 3
-	jl .skip
+%macro readRotorFile 0
 	fopen argument(3), o_readonly
 	mov r8, rax
 	loadRotors 
 	fclose argument(3)
-.skip:
-	putstring reflectUsingMsg
-	putstring reflector
-	;If two or more args, then load rotor sequence, rotations and plugboard from second arg
-	cmp argcount, 2
-	jl .error
+%endmacro
+
+%macro readConfigFile 0
 	fopen argument(2), o_readonly
 	mov r8, rax
 	loadRotorSequence r12, r13, r14
@@ -129,37 +122,117 @@ _start:
 	mov [leftRotPtr], r12
 	mov [middRotPtr], r13
 	mov [rightRotPtr], r14
-	putstring beginMsg
-.loop:
-	getchar  c
-	cmp rax, 0
-	je .end
+%endmacro
+
+%macro printRotors 0
+	mov r12, [leftRotPtr]
+	mov r13, [middRotPtr]
+	mov r14, [rightRotPtr]
+	putstring reflectorMsg
+	putstring reflector
+	putstring leftRotorMsg
+	printRotor r12
+	putstring middleRotorMsg
+	printRotor r13
+	putstring rightRotorMsg
+	printRotor r14
+	putstring plugboardMsg
+	putstring plugboard
+%endmacro
+
+%macro processChar 1
 	mov r11, reflector
 	mov r12, [leftRotPtr]
 	mov r13, [middRotPtr]
 	mov r14, [rightRotPtr]
-	mov r15, rotor4
-	encryptLetter c, r11, r12, r13, r14, r15
+	mov r15, plugboard
+	isupper byte [%1]
+	jne %%skip
+	push rax
+	push rcx
+	push r11
 	putchar c
+	pop r11
+	pop rcx
+	pop rax
+	encryptLetter %1, r11, r12, r13, r14, r15
+%%skip:
 	handleRotations r12, r13, r14
+%endmacro
+
+section .text
+
+global _start
+_start:
+	;Enter raw mode to read char by char.
+	call canonical_off
+	call echo_off
+
+	putstring clearScreen
+	putstring introMsg
+
+	;If arg 4 exists, read line by line.
+	cmp argcount, 4
+	jl .skip0
+	call canonical_on
+	call echo_on
+.skip0:
+	;If three or more args, then load extra rotors from third arg
+	cmp argcount, 3
+	jl .skip1
+	readRotorFile
+.skip1:
+	putstring reflectorMsg
+	putstring reflector
+	;If two or more args, then load rotor sequence, rotations and plugboard from second arg
+	cmp argcount, 2
+	jl .error
+	readConfigFile
+	putstring beginMsg
+	xor rbx,rbx
+.loop:
+	push rbx
+	getchar  c
+	cmp rax, 0
+	je .end
+	putstring clearScreen
+	printRotors
+	putchar newline
+	processChar c
+	putchar newline
+	pop rbx
+	mov al, [c]
+	mov [result + rbx], al
+	inc rbx
+	putstring result
 	jmp .loop
 .end:
+	call canonical_on
+	call echo_on
 	return 0
 .error:
+	call canonical_on
+	call echo_on
 	putstring usageMsg
 	return -1
 
 section .data
 introMsg	db "Welcome to EnigmASM. Ctrl-C to quit.",10,0
-usageMsg	db "  Usage: $ ./EngimASM config [extra-rotors]",10,0
-rotorMsg	db 10,"Read rotor: ",0
-reflectorMsg	db 10,"Read reflector: ",0
-reflectUsingMsg	db 10,"Using reflector ",0
-usingMsg	db 10,"Using rotor ",0
-rotationMsg	db 10,"Using rotation: ",0
-plugboardMsg	db 10,"Using plugboard: ",0
-colon		db ": ",0
+usageMsg	db "  Usage: $ ./EngimASM config [extra-rotors] [line-mode]",10,0
+rotorMsg	db 10,"Read rotor:	",0
+readReflectrMsg	db 10,"Read reflector:	",0
+reflectorMsg	db 10,"Use reflector:	",0
+usingMsg	db 10,"Use rotor ",0
+rotationMsg	db 10,"Use rotation:	",0
+plugboardMsg	db 10,"Use plugboard:	",0
+leftRotorMsg	db 10,"Left rotor:	",0
+middleRotorMsg	db 10,"Middle rotor:	",0
+rightRotorMsg	db 10,"Right rotor:	",0
+
+colon		db ":	",0
 beginMsg	db 10,"Begin typing your message in CAPS:",10,0
+newline		db 10
+clearScreen	db 0x1b,'[2J',0x1b,'[H',0
 
 reflector	newRotor "ZYXWVUTSRQPONMLKJIHGFEDCBA",0
 rotor1		newRotor "EKMFLGDQVZNTOWYHXUSPAIBRCJ",0
@@ -174,7 +247,8 @@ plugboard	newRotor "ABCDEFGHIJKLMNOPQRSTUVWXYZ",0
 
 section .bss
 temp		resb temp_size
-temp2		resb 64
+temp2		resb temp2_size
+result		resb result_size
 c		resb	1
 leftRotPtr	resq	1
 middRotPtr	resq	1
