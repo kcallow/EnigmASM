@@ -17,6 +17,6 @@
 ## Getting started:
   1. Download the source and decompress.
   2. Type 'make' in the source's directory.
-     NOTE: Makefile uses YASM as assembler.  To use NASM, open 'Makefile' and change the 'ASSEMBLER' variable's value from 'yasm' to 'nasm'.
+###NOTE: Makefile uses YASM as assembler.  To use NASM, open 'Makefile' and change the 'ASSEMBLER' variable's value from 'yasm' to 'nasm'.
   3. You should now have an executable called 'Main'.  To run it, type './Main config.txt rotors.txt'.  This uses the example config and extra rotors file.  Do './Main' to see full usage.
   4. Start typing capital letters.  You will see how the rotors rotate each time, and see the sequence of letters passed to encrypt your letter.  Whitespace, punctuation, numbers, and lowercase letters are not encrypted.  Type Ctrl-C when done.
