@@ -52,9 +52,9 @@
   All encryption elements are represented by the Rotor data structure, with the reflector and plugboard with a fixed rotation of 0.  The program attempts to explain its workings clearly.
 
     Use reflector:    ZYXWVUTSRQPONMLKJIHGFEDCBA
-    Left rotor:    HXLNFTGKDCMWBESOVPZJAYQUIR
-    Middle rotor:    UPSDNHLXAWMJQOFECKVZBRGITY
-    Right rotor:    MFLGDQVZNTOWYHXUSPAIBRCJEK
+    Left rotor:       HXLNFTGKDCMWBESOVPZJAYQUIR
+    Middle rotor:     UPSDNHLXAWMJQOFECKVZBRGITY
+    Right rotor:      MFLGDQVZNTOWYHXUSPAIBRCJEK
     Use plugboard:    JVNDEXRHKAILTCUZSGQMOBWFYP
     M -> T -> I -> A -> H -> S -> O -> N -> I -> K
     AV VLXQ QM YWJOLEP SIUMJE.  PMFR SK GVYSVLDK
